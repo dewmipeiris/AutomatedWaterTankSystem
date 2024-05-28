@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Water Management</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="d-flex justify-content-center align-items-center" style="min-height: 10vh;">
+        <h3 class="btn btn-warning m-1">SMART WATER TANK SYSTEM</h3>
+    </div>
+    <div class="content">
+        <input type="text" id="tkSts" style="padding: 10px; font-size: 30px;">
+        <button id="refillBtn">Refill</button>
+    </div>
+
+
+
+
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-database.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+
+
+    <script type="module">
+        import { getData, updateRefillValue } from "./fetchData.js"; // Make sure you have a module that exports these functions.
+
+        async function printTankStatus() {
+            const tankStatusData = await getData();
+            if (tankStatusData && tankStatusData.TankStatus) {
+                console.log(tankStatusData.cm);
+                document.getElementById("tkSts").value = tankStatusData.TankStatus;
+            } else {
+                console.log("No data available");
+            }
+        }
+
+        function printHi() {
+            printTankStatus();
+        }
+
+        async function refill() { // Make it an async function
+            const upd = await updateRefillValue(1);
+            console.log(upd);
+        }
+
+        // Set an interval to call the function every 3 seconds
+        setInterval(printHi, 3000);
+        
+        // Add an event listener to call refill when the button is clicked
+        document.getElementById("refillBtn").addEventListener("click", refill);
+    </script>
+</body>
+</html>
